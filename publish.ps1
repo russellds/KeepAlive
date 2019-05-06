@@ -1,6 +1,6 @@
 $publishModuleSplat = @{
     Path        = ".\KeepAlive"
-    NuGetApiKey = $(nugetapikey)
+    NuGetApiKey = $ENV:nugetapikey
     Verbose     = $true
     Force       = $true
     Repository  = "PSGallery"
