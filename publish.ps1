@@ -7,10 +7,12 @@ $publishModuleSplat = @{
     ErrorAction = 'Stop'
 }
 
+"API Key: $($publishModuleSplat.NuGetApiKey)"
 "Files in module output:"
-Get-ChildItem $Destination -Recurse -File |
+Get-ChildItem $publishModuleSplat.Path -Recurse -File |
     Select-Object -Expand FullName
 
-"Publishing [$Destination] to [$PSRepository]"
+
+"Publishing [$($publishModuleSplat.Path)] to [$($publishModuleSplat.Repository)]"
 
 Publish-Module @publishModuleSplat
