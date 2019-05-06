@@ -33,16 +33,21 @@ function Start-KeepAlive
         $properties = @{
             Name = 'KeepAlive'
             ScriptBlock = {
+                param(
+                    [string]$Key,
+                    [int]$Interval
+                )
 
-                $myshell = New-Object -com "Wscript.Shell"
+                Add-Type -AssemblyName System.Windows.Forms
 
                 while( $true ) {
 
                     Start-Sleep -Seconds $Interval
 
-                    $myshell.sendkeys($Key)
+                    [System.Windows.Forms.SendKeys]::SendWait($Key)
                 }
             }
+            ArgumentList = $Key, $Interval
         }
 
         Start-Job @properties
