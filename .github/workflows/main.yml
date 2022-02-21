@@ -1,0 +1,31 @@
+name: 'Build, Test, and Publish PowerShell Module'
+on: [push]
+env:
+  MODULE_NAME: 'KeepAlive'
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: russellds/pwsh-module-build@v0
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest] # [windows-latest, windows-2016, ubuntu-latest, macos-latest]
+    needs: build
+    steps:
+      - uses: russellds/pwsh-module-test@v0
+        with:
+          moduleName: ${{ env.MODULE_NAME }}
+
+  publish:
+    runs-on: windows-latest
+    needs: test
+    steps:
+      - uses: russellds/pwsh-module-publish@v0
+        with:
+          moduleName: ${{ env.MODULE_NAME }}
+          nuGetApiKey: ${{ secrets.POSH_TEST_GALLERY_API_KEY }}
+          testGallery: 'True'
