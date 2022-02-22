@@ -7,6 +7,10 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: russellds/pwsh-module-build@v0
+      id: pwshModuleBuild
+
+    outputs:
+      preReleaseTag: ${{ steps.pwshModuleBuild.outputs.preReleaseTag }}
 
   test:
     runs-on: windows-latest
@@ -23,7 +27,7 @@ jobs:
       name: preview
     steps:
       - uses: russellds/pwsh-module-publish@v0
-        if: ${{ env.GitVersion_PreReleaseLabel == 'preview' }}
+        if: ${{ needs.pwshModuleBuild.outputspreReleaseTag == 'preview' }}
         with:
           moduleName: ${{ env.MODULE_NAME }}
           nuGetApiKey: ${{ secrets.PS_GALLERY_API_KEY }}
@@ -31,12 +35,12 @@ jobs:
 
   publishProd:
     runs-on: windows-latest
-    needs: test
+    needs: [build, test]
     environment:
       name: prod
     steps:
       - uses: russellds/pwsh-module-publish@v0
-        if: ${{ env.GitVersion_PreReleaseLabel == '' }}
+        if: ${{ needs.pwshModuleBuild.outputspreReleaseTag == '' }}
         with:
           moduleName: ${{ env.MODULE_NAME }}
           nuGetApiKey: ${{ secrets.PS_GALLERY_API_KEY }}
