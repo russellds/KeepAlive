@@ -26,7 +26,7 @@ jobs:
           moduleName: ${{ env.MODULE_NAME }}
 
   publishPreview:
-    if: ${{ contains(needs.build.outputs.preReleaseTag, 'preview') }}
+    if: contains(needs.build.outputs.preReleaseTag, 'preview')
     runs-on: windows-latest
     needs: [build, test]
     environment:
@@ -45,6 +45,7 @@ jobs:
       #     testGallery: 'True'
 
   publishProd:
+    if: needs.build.outputs.preReleaseTag == null
     runs-on: windows-latest
     needs: [build, test]
     environment:
