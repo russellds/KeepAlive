@@ -28,7 +28,7 @@ jobs:
   publishPreview:
     if: ${{ contains(needs.build.outputs.preReleaseTag, 'preview') }}
     runs-on: windows-latest
-    needs: test
+    needs: [build, test]
     environment:
       name: preview
     steps:
