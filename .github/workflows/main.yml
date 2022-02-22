@@ -17,26 +17,26 @@ jobs:
           moduleName: ${{ env.MODULE_NAME }}
 
   publishPreview:
-    if: ${{ env.GitVersion_PreReleaseLabel == 'preview' }}
     runs-on: windows-latest
     needs: test
     environment:
       name: preview
     steps:
       - uses: russellds/pwsh-module-publish@v0
+        if: ${{ env.GitVersion_PreReleaseLabel == 'preview' }}
         with:
           moduleName: ${{ env.MODULE_NAME }}
           nuGetApiKey: ${{ secrets.PS_GALLERY_API_KEY }}
           testGallery: 'True'
 
   publishProd:
-    if: ${{ env.GitVersion_PreReleaseLabel == '' }}
     runs-on: windows-latest
     needs: test
     environment:
       name: prod
     steps:
       - uses: russellds/pwsh-module-publish@v0
+        if: ${{ env.GitVersion_PreReleaseLabel == '' }}
         with:
           moduleName: ${{ env.MODULE_NAME }}
           nuGetApiKey: ${{ secrets.PS_GALLERY_API_KEY }}
