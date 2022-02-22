@@ -26,6 +26,7 @@ jobs:
           moduleName: ${{ env.MODULE_NAME }}
 
   publishPreview:
+    if: ${{ contains(needs.build.outputs.preReleaseTag, 'preview') }}
     runs-on: windows-latest
     needs: test
     environment:
@@ -34,10 +35,10 @@ jobs:
       - name: WriteHost
         shell: pwsh
         run: |
-          Write-Host "PreReleaseTag: ${{ needs.pwshModuleBuild.outputs.preReleaseTag }}"
+          Write-Host "PreReleaseTag: ${{ needs.build.outputs.preReleaseTag }}"
 
       # - uses: russellds/pwsh-module-publish@v0
-      #   if: ${{ needs.pwshModuleBuild.outputs.preReleaseTag == 'preview' }}
+      #   if: ${{ needs.build.outputs.preReleaseTag == 'preview' }}
       #   with:
       #     moduleName: ${{ env.MODULE_NAME }}
       #     nuGetApiKey: ${{ secrets.PS_GALLERY_API_KEY }}
@@ -52,10 +53,10 @@ jobs:
       - name: WriteHost
         shell: pwsh
         run: |
-          Write-Host "PreReleaseTag: ${{ needs.pwshModuleBuild.outputs.preReleaseTag }}"
+          Write-Host "PreReleaseTag: ${{ needs.build.outputs.preReleaseTag }}"
 
       # - uses: russellds/pwsh-module-publish@v0
-      #   if: ${{ needs.pwshModuleBuild.outputs.preReleaseTag == '' }}
+      #   if: ${{ needs.build.outputs.preReleaseTag == '' }}
       #   with:
       #     moduleName: ${{ env.MODULE_NAME }}
       #     nuGetApiKey: ${{ secrets.PS_GALLERY_API_KEY }}
