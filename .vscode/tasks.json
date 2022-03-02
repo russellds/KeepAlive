@@ -1,0 +1,79 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "type": "shell",
+            "command": "${workspaceFolder}/build.ps1",
+            "args": [
+                "-OutputDirectory",
+                "${workspaceFolder}/output"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "analyze",
+            "group": "test",
+            "type": "shell",
+            "command": "Invoke-ScriptAnalyzer",
+            "args": [
+                "-Path",
+                {
+                    "quoting": "weak",
+                    "value": "(Get-ChildItem -Path ./output/KeepAlive -Directory | Sort-Object -Property Name -Descending | Select-Object -First 1 -ExpandProperty FullName)"
+                },
+                "-Profile",
+                "./PSScriptAnalyzerSettings.psd1"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "test",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "command": "Invoke-Pester",
+            "args": [
+                "-Path",
+                "${workspaceFolder}/tests",
+                "-PesterOption",
+                "@{ IncludeVSCodeMarker = $True }",
+                "-CodeCoverage",
+                "(Convert-Path (Join-Path (Split-Path (Get-Module KeepAlive -List | Sort Version -Desc | Select -First 1 -Expand ModuleBase)) *.psm1))"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        }
+    ]
+}

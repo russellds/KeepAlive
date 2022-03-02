@@ -1,0 +1,22 @@
+mode: Mainline
+next-version: 1.0.1
+commit-date-format: yyyyMMddTHHmmss
+branches:
+  main:
+    increment: Inherit
+  pull-request:
+    tag: rc
+    increment: Inherit
+  bugfix:
+    regex: bug(fix)?[-/]
+    tag: preview
+    increment: Patch
+    source-branches:
+    - main
+  feature:
+    regex: feature(s)?[-/]
+    tag: preview
+    increment: Minor
+ignore:
+  sha: []
+merge-message-formats: {}

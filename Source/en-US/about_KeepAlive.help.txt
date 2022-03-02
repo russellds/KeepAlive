@@ -1,0 +1,8 @@
+TOPIC
+    about_KeepAlive
+
+SHORT DESCRIPTION
+    PowerShell Module that keeps the Windows Screen Saver from turning on.
+
+LONG DESCRIPTION
+    PowerShell Module that keeps the Windows Screen Saver from turning on.
