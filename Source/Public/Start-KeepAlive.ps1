@@ -1,17 +1,15 @@
 function Start-KeepAlive {
     <#
         .Synopsis
-        Prevents the screen saver from locking your screen.
+            Prevents the screen saver from locking your screen.
         .DESCRIPTION
-        Long description
+            Prevents the screen saver from locking your screen.
         .EXAMPLE
-        Example of how to use this cmdlet
-        .EXAMPLE
-        Another example of how to use this cmdlet
+            Example of how to use this cmdlet
         .INPUTS
-        Inputs to this cmdlet (if any)
+            None
         .OUTPUTS
-        Output from this cmdlet (if any)
+            None
         .NOTES
             To prevent RDP sessions from ending, you must be focused on the RDP session.
     #>
